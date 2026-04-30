@@ -1,0 +1,13 @@
+{
+  "name": "e-complaint",
+  "version": "1.0.0",
+  "description": "E-Complaint System",
+  "scripts": {
+    "start": "node server/server.js"
+  },
+  "dependencies": {
+    "@vercel/blob": "^0.22.1",
+    "cors": "^2.8.5",
+    "express": "^4.19.2"
+  }
+}

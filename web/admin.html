@@ -1,0 +1,479 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard | E-Complaint</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <!-- ✅ ใช้งาน Chart.js สำหรับแสดงกราฟสถิติ -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+      .admin-card,
+      .queue-control-panel,
+      .dashboard-stats {
+        animation: fadeSlideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+      }
+      .queue-control-panel {
+        animation-delay: 0.1s;
+      }
+      .dashboard-stats {
+        animation-delay: 0.2s;
+      }
+      .admin-card:nth-of-type(1) {
+        animation-delay: 0.3s;
+      }
+      .admin-card:nth-of-type(2) {
+        animation-delay: 0.4s;
+      }
+      .admin-card:nth-of-type(3) {
+        animation-delay: 0.5s;
+      }
+      .admin-card:nth-of-type(4) {
+        animation-delay: 0.6s;
+      }
+
+      @keyframes fadeSlideUp {
+        0% {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .queue-control-panel {
+        background: linear-gradient(135deg, #ffffff 0%, #fff0f5 100%);
+        border: none;
+        box-shadow: 0 15px 35px rgba(255, 102, 163, 0.15);
+        position: relative;
+        overflow: hidden;
+      }
+      .queue-control-panel::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 5px;
+        height: 100%;
+        background: #ff66a3;
+      }
+      .current-call-box h1 {
+        font-size: 72px;
+        color: #ff66a3;
+        text-shadow: 0 10px 25px rgba(255, 102, 163, 0.3);
+        margin: 5px 0;
+        letter-spacing: 2px;
+      }
+
+      .live-clock {
+        background: #f8f9fa;
+        padding: 8px 15px;
+        border-radius: 8px;
+        font-family: monospace;
+        font-size: 16px;
+        font-weight: 600;
+        color: #333;
+        border: 1px solid #e1e5eb;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .data-table tbody tr {
+        transition: all 0.2s ease;
+      }
+      .data-table tbody tr:hover {
+        background-color: #fff !important;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        transform: scale(1.01);
+        z-index: 10;
+        position: relative;
+      }
+      .admin-card h3 i {
+        color: #ff66a3;
+        background: #ffe6f0;
+        width: 35px;
+        height: 35px;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 8px;
+        margin-right: 10px;
+      }
+
+      .next-btn {
+        animation: pulseBtn 2s infinite;
+      }
+      @keyframes pulseBtn {
+        0% {
+          box-shadow: 0 0 0 0 rgba(255, 102, 163, 0.5);
+        }
+        70% {
+          box-shadow: 0 0 0 15px rgba(255, 102, 163, 0);
+        }
+        100% {
+          box-shadow: 0 0 0 0 rgba(255, 102, 163, 0);
+        }
+      }
+
+      .custom-cb {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        cursor: pointer;
+        padding: 8px 15px;
+        border-radius: 20px;
+        border: 1px solid #e1e5eb;
+        background: #f8f9fa;
+        transition: 0.2s;
+        font-size: 14px;
+        font-weight: 500;
+      }
+      .custom-cb input {
+        margin: 0;
+        width: 16px;
+        height: 16px;
+        accent-color: #ff66a3;
+      }
+      .custom-cb:hover {
+        background: #ffe6f0;
+        border-color: #ffb3d1;
+      }
+
+      .holiday-pill {
+        background: #fff0f0;
+        color: #d93025;
+        padding: 6px 15px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        border: 1px solid #facaca;
+      }
+    </style>
+  </head>
+  <body class="page-body">
+    <nav class="navbar">
+      <div class="logo">
+        <i class="fa-solid fa-shield-halved"></i> Admin <span>Panel</span>
+      </div>
+      <div class="nav-menu">
+        <div class="live-clock">
+          <i class="fa-regular fa-clock" style="color: #ff66a3"></i>
+          <span id="clockDisplay">00:00:00</span>
+        </div>
+        <button
+          onclick="location.href = 'users.html'"
+          class="logout-btn"
+          style="background: #e8f0fe; color: #1a73e8"
+        >
+          <i class="fa-solid fa-users-gear"></i> จัดการผู้ใช้
+        </button>
+        <button
+          onclick="
+            localStorage.removeItem('currentUsername');
+            location.href = 'index.html';
+          "
+          class="logout-btn"
+        >
+          <i class="fa-solid fa-power-off"></i> ออกระบบ
+        </button>
+      </div>
+    </nav>
+
+    <div class="admin-container">
+      <!-- ส่วนควบคุมการเรียกคิว -->
+      <div class="queue-control-panel">
+        <div class="current-call-box">
+          <p
+            style="
+              color: #888;
+              font-weight: 600;
+              text-transform: uppercase;
+              font-size: 14px;
+            "
+          >
+            <i class="fa-solid fa-bullhorn fa-shake"></i> กำลังเรียกคิว
+          </p>
+          <h1 id="curQ">---</h1>
+        </div>
+        <div class="control-actions">
+          <button onclick="callNxt()" class="next-btn">
+            <i class="fa-solid fa-bell"></i> เรียกคิวถัดไป
+          </button>
+          <button
+            onclick="
+              document.getElementById('uModal').classList.remove('hidden')
+            "
+            class="urgent-btn"
+          >
+            <i class="fa-solid fa-bolt" style="color: #fbbc04"></i> แทรกคิวด่วน
+          </button>
+        </div>
+      </div>
+
+      <!-- ส่วนแสดงสถิติสรุป -->
+      <div class="dashboard-stats">
+        <div class="stat-card" style="border-left: 5px solid #ff66a3">
+          <div>
+            <p style="color: #888; font-size: 13px">
+              คิวทั้งหมด (วันนี้ / รวม)
+            </p>
+            <h3 id="stTot" style="font-size: 28px; color: #333">0 / 0</h3>
+          </div>
+          <div class="wait-icon"><i class="fa-solid fa-ticket"></i></div>
+        </div>
+        <div class="stat-card" style="border-left: 5px solid #fbbc04">
+          <div>
+            <p style="color: #888; font-size: 13px">กำลังรอเรียก</p>
+            <h3 id="stW" style="font-size: 28px; color: #333">0</h3>
+          </div>
+          <div class="wait-icon" style="color: #fbbc04; background: #fff8e1">
+            <i class="fa-solid fa-hourglass-half"></i>
+          </div>
+        </div>
+        <div class="stat-card" style="border-left: 5px solid #34a853">
+          <div>
+            <p style="color: #888; font-size: 13px">ให้บริการเสร็จสิ้น</p>
+            <h3 id="stC" style="font-size: 28px; color: #333">0</h3>
+          </div>
+          <div class="wait-icon" style="color: #34a853; background: #e6f4ea">
+            <i class="fa-solid fa-check-double"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- ส่วนกราฟสถิติ -->
+      <div class="admin-card">
+        <h3 style="margin-bottom: 20px">
+          <i class="fa-solid fa-chart-column"></i>
+          สถิติช่วงเวลาที่มีผู้ใช้บริการหนาแน่น
+        </h3>
+        <div style="height: 300px"><canvas id="pkChart"></canvas></div>
+      </div>
+
+      <!-- ส่วนตารางจัดการคิว -->
+      <div class="admin-card">
+        <h3 style="margin-bottom: 20px">
+          <i class="fa-solid fa-list-check"></i> จัดการคิววันนี้ (Live Queue)
+        </h3>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>เวลา</th>
+              <th>หมายเลขคิว</th>
+              <th>บริการ</th>
+              <th>ชื่อผู้ติดต่อ</th>
+              <th>สถานะ</th>
+              <th>ลบ</th>
+            </tr>
+          </thead>
+          <tbody id="qTb"></tbody>
+        </table>
+      </div>
+
+      <!-- ส่วนจัดการบริการ -->
+      <div class="admin-card">
+        <h3 style="margin-bottom: 20px">
+          <i class="fa-solid fa-layer-group"></i> จัดการบริการ (Service)
+        </h3>
+        <form
+          id="srvForm"
+          style="
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr auto;
+            gap: 15px;
+            margin-bottom: 25px;
+            align-items: end;
+          "
+        >
+          <input type="hidden" id="sId" />
+          <div class="input-group" style="margin: 0">
+            <label>ชื่อบริการ</label
+            ><input
+              type="text"
+              id="sn"
+              placeholder="เช่น ยื่นคำร้อง"
+              class="form-control"
+              required
+            />
+          </div>
+          <div class="input-group" style="margin: 0">
+            <label>เวลา(นาที/คิว)</label
+            ><input
+              type="number"
+              id="sd"
+              placeholder="นาที"
+              class="form-control"
+              required
+            />
+          </div>
+          <div class="input-group" style="margin: 0">
+            <label>รับได้(คิว/วัน)</label
+            ><input
+              type="number"
+              id="sm"
+              placeholder="คิวสูงสุด"
+              class="form-control"
+              required
+            />
+          </div>
+          <button class="primary-btn" style="height: 52px; margin: 0">
+            <i class="fa-solid fa-save"></i> บันทึก
+          </button>
+        </form>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>ชื่อบริการ</th>
+              <th>เวลา/คิว</th>
+              <th>รับได้สูงสุด</th>
+              <th>จัดการ</th>
+            </tr>
+          </thead>
+          <tbody id="sTb"></tbody>
+        </table>
+      </div>
+
+      <!-- ส่วนตั้งค่าระบบ -->
+      <div class="admin-card">
+        <h3 style="margin-bottom: 20px">
+          <i class="fa-solid fa-clock"></i> ตั้งค่าวัน-เวลาทำการ (Business
+          Hours)
+        </h3>
+        <form id="settingsForm">
+          <div class="input-group">
+            <label>วันทำการ (Working Days)</label>
+            <div
+              style="
+                display: flex;
+                gap: 10px;
+                flex-wrap: wrap;
+                margin-top: 10px;
+              "
+            >
+              <label class="custom-cb"
+                ><input type="checkbox" name="wDay" value="1" /> จันทร์</label
+              >
+              <label class="custom-cb"
+                ><input type="checkbox" name="wDay" value="2" /> อังคาร</label
+              >
+              <label class="custom-cb"
+                ><input type="checkbox" name="wDay" value="3" /> พุธ</label
+              >
+              <label class="custom-cb"
+                ><input type="checkbox" name="wDay" value="4" /> พฤหัสฯ</label
+              >
+              <label class="custom-cb"
+                ><input type="checkbox" name="wDay" value="5" /> ศุกร์</label
+              >
+              <label class="custom-cb"
+                ><input
+                  type="checkbox"
+                  name="wDay"
+                  value="6"
+                  style="accent-color: #1a73e8"
+                />
+                เสาร์</label
+              >
+              <label class="custom-cb"
+                ><input
+                  type="checkbox"
+                  name="wDay"
+                  value="0"
+                  style="accent-color: #d93025"
+                />
+                อาทิตย์</label
+              >
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px">
+            <div class="input-group">
+              <label>เวลาเปิดรับคิว (Open)</label
+              ><input type="time" id="setOp" class="form-control" required />
+            </div>
+            <div class="input-group">
+              <label>เวลาปิดรับคิว (Close)</label
+              ><input type="time" id="setCl" class="form-control" required />
+            </div>
+          </div>
+          <div class="input-group">
+            <label>กำหนดวันหยุดพิเศษ (Holidays)</label>
+            <div style="display: flex; gap: 15px; margin-bottom: 15px">
+              <input type="date" id="holidayInp" class="form-control" />
+              <button
+                type="button"
+                onclick="addHoliday()"
+                class="action-btn btn-edit"
+                style="margin: 0; padding: 0 25px"
+              >
+                <i class="fa-solid fa-plus"></i> เพิ่มวันหยุด
+              </button>
+            </div>
+            <div
+              id="holidaysList"
+              style="display: flex; gap: 10px; flex-wrap: wrap"
+            ></div>
+          </div>
+          <button
+            type="submit"
+            class="primary-btn w-100"
+            style="background: #1a1a1a; box-shadow: none; padding: 18px"
+          >
+            <i class="fa-solid fa-server"></i> บันทึกการตั้งค่าระบบ
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modal แทรกคิวด่วน -->
+    <div id="uModal" class="modal hidden">
+      <div class="modal-content">
+        <h3 style="color: #1a1a1a; margin-bottom: 10px">
+          <i class="fa-solid fa-bolt" style="color: #fbbc04"></i> แทรกคิวด่วน
+        </h3>
+        <p style="color: #888; font-size: 14px; margin-bottom: 20px">
+          ระบบจะสร้างคิวและทำการเรียกทันที
+        </p>
+        <form id="uForm">
+          <div class="input-group">
+            <label>ชื่อ-นามสกุล</label
+            ><input
+              type="text"
+              id="un"
+              placeholder="ระบุชื่อผู้ติดต่อ"
+              class="form-control"
+              required
+              autocomplete="off"
+            />
+          </div>
+          <button type="submit" class="primary-btn w-100" style="padding: 15px">
+            <i class="fa-solid fa-bullhorn"></i> แทรกและเรียกคิวเลย
+          </button>
+        </form>
+        <button
+          onclick="document.getElementById('uModal').classList.add('hidden')"
+          class="logout-btn w-100 mt-20"
+        >
+          ยกเลิก
+        </button>
+      </div>
+    </div>
+
+    <script>
+      // ฟังก์ชันนาฬิกา Real-time
+      setInterval(() => {
+        document.getElementById("clockDisplay").textContent =
+          new Date().toLocaleTimeString("th-TH", { hour12: false });
+      }, 1000);
+    </script>
+    <script src="admin.js"></script>
+  </body>
+</html>

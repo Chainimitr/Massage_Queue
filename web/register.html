@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>สมัครสมาชิก | E-Complaint</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* ================= ลูกเล่นเฉพาะหน้า Register (Gimmicks) ================= */
+        
+        /* พื้นหลังและวงกลมลอยไปมา */
+        .register-wrapper {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, #ffe6f0 0%, #ffb3d1 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .register-shape {
+            position: absolute;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.4), rgba(255,255,255,0.1));
+            backdrop-filter: blur(5px);
+            z-index: 0;
+            animation: floatBubble 8s infinite alternate ease-in-out;
+        }
+        .shape-1 { width: 350px; height: 350px; top: -50px; left: -100px; }
+        .shape-2 { width: 250px; height: 250px; bottom: 5%; right: -50px; animation-delay: -2s; }
+        .shape-3 { width: 150px; height: 150px; top: 20%; right: 15%; animation-delay: -4s; }
+        
+        @keyframes floatBubble {
+            0% { transform: translateY(0) scale(1) rotate(0deg); }
+            100% { transform: translateY(-30px) scale(1.05) rotate(10deg); }
+        }
+
+        /* แอนิเมชันกล่องสมัครสมาชิกเด้งขึ้นมา */
+        .register-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 50px 40px;
+            border-radius: 24px;
+            box-shadow: 0 20px 50px rgba(255, 105, 180, 0.2);
+            width: 100%;
+            max-width: 420px;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            position: relative;
+            z-index: 1;
+            animation: popInCard 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes popInCard {
+            0% { opacity: 0; transform: scale(0.9) translateY(30px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .register-card h2 {
+            text-align: center;
+            color: #1a1a1a;
+            font-size: 32px;
+            margin-bottom: 5px;
+            font-weight: 700;
+        }
+        .subtitle {
+            text-align: center;
+            color: #888;
+            font-size: 15px;
+            margin-bottom: 30px;
+        }
+
+        /* ลูกเล่นช่องกรอกข้อมูล (Micro-interaction) */
+        .input-group label i {
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            color: #aaa;
+            margin-right: 5px;
+        }
+        .input-group:focus-within label i {
+            color: #ff66a3;
+            transform: scale(1.2) rotate(-5deg);
+        }
+        .input-group:focus-within label {
+            color: #ff66a3;
+            font-weight: 600;
+        }
+
+        /* ไอคอนตกแต่งส่วนหัวให้เด้งดึ๋งเบาๆ */
+        .header-icon {
+            text-align: center;
+            font-size: 45px;
+            color: #ff66a3;
+            margin-bottom: 15px;
+            animation: bounceSoft 3s infinite ease-in-out;
+            text-shadow: 0 10px 20px rgba(255, 102, 163, 0.2);
+        }
+        @keyframes bounceSoft {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="register-wrapper">
+        <div class="register-shape shape-1"></div>
+        <div class="register-shape shape-2"></div>
+        <div class="register-shape shape-3"></div>
+
+        <div class="register-card">
+            
+            <div class="header-icon">
+                <i class="fa-solid fa-user-shield"></i>
+            </div>
+            
+            <h2>สร้างบัญชีใหม่</h2>
+            <p class="subtitle">ลงทะเบียนเพื่อเริ่มต้นใช้งานระบบ E-Complaint</p>
+            
+            <form id="regForm">
+                <div class="input-group">
+                    <label for="reg-user"><i class="fa-solid fa-user-plus"></i> ตั้งชื่อผู้ใช้งาน</label>
+                    <input type="text" id="reg-user" placeholder="กรอกชื่อผู้ใช้ที่ต้องการ" required autocomplete="off">
+                </div>
+                
+                <div class="input-group">
+                    <label for="reg-pass"><i class="fa-solid fa-key"></i> ตั้งรหัสผ่าน</label>
+                    <input type="password" id="reg-pass" placeholder="ความยาวอย่างน้อย 4 ตัวอักษร" required>
+                </div>
+                
+                <div id="regAlert" class="alert hidden"></div>
+                
+                <button type="submit" id="regBtn" class="primary-btn w-100" style="padding: 16px; font-size: 18px; margin-top: 15px;">
+                    <i class="fa-solid fa-check-circle"></i> ยืนยันการสมัครสมาชิก
+                </button>
+                
+                <p class="text-center mt-20" style="margin-top: 25px;">
+                    มีบัญชีอยู่แล้วใช่ไหม? <a href="index.html" class="link-text">เข้าสู่ระบบเลย</a>
+                </p>
+            </form>
+        </div>
+    </div>
+    
+    <script src="register.js"></script>
+    <!-- 🆕 ใส่บรรทัดนี้เพิ่มเข้าไปในหน้าติดต่อ, หน้าโฮม, หน้าจองคิว, หน้าตั๋วคิว ฯลฯ -->
+    <script src="view-toggle.js"></script>
+</body>
+</html>

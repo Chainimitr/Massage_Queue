@@ -1,0 +1,529 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ติดต่อเจ้าหน้าที่ | E-Complaint</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <style>
+      /* ================= ลูกเล่นหน้า Contact Us (Clean & Modern Layout) ================= */
+      .page-body {
+        background-color: #f4f7fa;
+      }
+      .contact-container {
+        max-width: 1100px;
+        margin: 50px auto 80px;
+        padding: 0 20px;
+      }
+
+      /* ================= 1. ส่วนหัว (Hero Section) ================= */
+      .contact-hero {
+        text-align: center;
+        max-width: 700px;
+        margin: 0 auto 50px;
+        animation: fadeInDown 0.6s ease backwards;
+      }
+      .hero-icon {
+        width: 80px;
+        height: 80px;
+        border-radius: 24px;
+        background: linear-gradient(135deg, #ffb3d1, #ff66a3);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 35px;
+        color: #fff;
+        margin: 0 auto 20px;
+        box-shadow: 0 15px 30px rgba(255, 102, 163, 0.3);
+        animation: float 4s ease-in-out infinite;
+      }
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+      .contact-hero h1 {
+        color: #1a1a1a;
+        font-size: 42px;
+        letter-spacing: -1px;
+        margin-bottom: 15px;
+        font-weight: 800;
+      }
+      .contact-hero p {
+        color: #555;
+        font-size: 16px;
+        line-height: 1.7;
+        margin: 0;
+      }
+
+      /* ================= 2. ช่องทางติดต่อ (Social Cards) ================= */
+      .social-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 25px;
+        margin-bottom: 50px;
+      }
+      .social-card {
+        border-radius: 24px;
+        padding: 40px 30px;
+        text-align: center;
+        text-decoration: none;
+        color: #fff;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        animation: slideUpFade 0.6s ease backwards;
+        cursor: pointer;
+        border: none;
+      }
+      .social-card:nth-child(1) {
+        animation-delay: 0.1s;
+      }
+      .social-card:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+      .social-card:nth-child(3) {
+        animation-delay: 0.3s;
+      }
+      .social-card:hover {
+        transform: translateY(-10px);
+      }
+
+      .s-icon {
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.2);
+        margin: 0 auto 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 30px;
+        transition: 0.4s;
+      }
+      .social-card h4 {
+        font-size: 20px;
+        margin: 0 0 10px 0;
+        font-weight: 700;
+        color: #fff;
+      }
+      .social-card p {
+        font-size: 14px;
+        margin: 0 0 25px 0;
+        color: rgba(255, 255, 255, 0.9);
+        font-weight: 500;
+      }
+
+      .s-btn {
+        background: rgba(255, 255, 255, 0.2);
+        color: #fff;
+        padding: 12px 25px;
+        border-radius: 30px;
+        font-size: 14px;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: 0.3s;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .social-card:hover .s-btn {
+        background: #fff;
+      }
+
+      .card-fb {
+        background: linear-gradient(135deg, #1877f2, #0b5fc7);
+      }
+      .card-fb:hover {
+        box-shadow: 0 20px 40px rgba(24, 119, 242, 0.3);
+      }
+      .card-fb:hover .s-icon {
+        transform: rotate(-10deg) scale(1.1);
+        background: rgba(255, 255, 255, 0.3);
+      }
+      .card-fb:hover .s-btn {
+        color: #1877f2;
+      }
+
+      .card-line {
+        background: linear-gradient(135deg, #00b900, #008f00);
+      }
+      .card-line:hover {
+        box-shadow: 0 20px 40px rgba(0, 185, 0, 0.3);
+      }
+      .card-line:hover .s-icon {
+        transform: rotate(10deg) scale(1.1);
+        background: rgba(255, 255, 255, 0.3);
+      }
+      .card-line:hover .s-btn {
+        color: #00b900;
+      }
+
+      .card-ig {
+        background: linear-gradient(45deg, #f09433, #dc2743, #bc1888);
+      }
+      .card-ig:hover {
+        box-shadow: 0 20px 40px rgba(225, 48, 108, 0.3);
+      }
+      .card-ig:hover .s-icon {
+        transform: scale(1.1);
+        background: rgba(255, 255, 255, 0.3);
+      }
+      .card-ig:hover .s-btn {
+        color: #e1306c;
+      }
+
+      /* ================= 3. ส่วนล่าง (เวลาทำการ + แผนที่) ================= */
+      .bottom-grid {
+        display: grid;
+        grid-template-columns: 1fr 1.8fr;
+        gap: 30px;
+        animation: slideUpFade 0.6s ease 0.4s backwards;
+      }
+      .info-card {
+        background: #fff;
+        border-radius: 24px;
+        padding: 35px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.03);
+        border: 1px solid #e1e5eb;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .status-box {
+        background: #f8f9fa;
+        border-radius: 16px;
+        padding: 20px;
+        margin-bottom: 30px;
+        border-left: 5px solid #ccc;
+        transition: all 0.3s;
+      }
+      .status-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 12px;
+      }
+      .status-header h4 {
+        margin: 0;
+        color: #1a1a1a;
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .live-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 700;
+      }
+
+      .is-online {
+        background: #e6f4ea;
+        color: #1e8e3e;
+      }
+      .border-online {
+        border-left-color: #1e8e3e;
+      }
+      .dot-online {
+        width: 8px;
+        height: 8px;
+        background: #1e8e3e;
+        border-radius: 50%;
+        box-shadow: 0 0 0 0 rgba(30, 142, 62, 0.7);
+        animation: pulseGreen 2s infinite;
+      }
+
+      .is-offline {
+        background: #fce8e6;
+        color: #d93025;
+      }
+      .border-offline {
+        border-left-color: #d93025;
+      }
+      .dot-offline {
+        width: 8px;
+        height: 8px;
+        background: #d93025;
+        border-radius: 50%;
+      }
+
+      @keyframes pulseGreen {
+        0% {
+          box-shadow: 0 0 0 0 rgba(30, 142, 62, 0.7);
+        }
+        70% {
+          box-shadow: 0 0 0 10px rgba(30, 142, 62, 0);
+        }
+        100% {
+          box-shadow: 0 0 0 0 rgba(30, 142, 62, 0);
+        }
+      }
+
+      .status-box p {
+        margin: 0;
+        color: #555;
+        font-size: 14px;
+      }
+      .status-box span {
+        color: #888;
+        font-size: 12px;
+      }
+
+      .address-info h3 {
+        color: #1a1a1a;
+        margin-bottom: 20px;
+        font-size: 20px;
+      }
+      .address-item {
+        display: flex;
+        margin-bottom: 15px;
+      }
+      .address-item i {
+        width: 30px;
+        color: #ff66a3;
+        font-size: 18px;
+        margin-top: 3px;
+      }
+      .address-item p {
+        margin: 0;
+        color: #555;
+        font-size: 15px;
+        line-height: 1.6;
+      }
+
+      .map-card {
+        background: #fff;
+        border-radius: 24px;
+        overflow: hidden;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.03);
+        border: 1px solid #e1e5eb;
+        display: flex;
+        flex-direction: column;
+      }
+      .map-card iframe {
+        width: 100%;
+        height: 100%;
+        min-height: 450px;
+        border: none;
+        flex-grow: 1;
+      }
+
+      .float-chat-btn {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #ff66a3, #ff4d94);
+        color: #fff;
+        font-size: 24px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 10px 25px rgba(255, 102, 163, 0.4);
+        cursor: pointer;
+        z-index: 100;
+        transition: 0.3s;
+        animation: bounceInUp 1s cubic-bezier(0.175, 0.885, 0.32, 1.275)
+          backwards;
+      }
+      .float-chat-btn:hover {
+        transform: scale(1.1) rotate(-10deg);
+      }
+
+      @keyframes fadeInDown {
+        0% {
+          opacity: 0;
+          transform: translateY(-30px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes slideUpFade {
+        0% {
+          opacity: 0;
+          transform: translateY(40px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes bounceInUp {
+        0% {
+          opacity: 0;
+          transform: translateY(100px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @media (max-width: 900px) {
+        .social-grid {
+          grid-template-columns: 1fr;
+          gap: 20px;
+        }
+        .bottom-grid {
+          grid-template-columns: 1fr;
+        }
+        .map-card iframe {
+          min-height: 300px;
+        }
+        .contact-hero h1 {
+          font-size: 32px;
+        }
+      }
+    </style>
+  </head>
+  <body class="page-body">
+    <nav class="navbar">
+      <div class="logo">
+        <i class="fa-solid fa-headset"></i> Contact <span>Center</span>
+      </div>
+      <div class="nav-menu">
+        <button onclick="location.href = 'home.html'" class="logout-btn">
+          <i class="fa-solid fa-arrow-left"></i> กลับหน้าหลัก
+        </button>
+      </div>
+    </nav>
+
+    <div class="contact-container">
+      <div class="contact-hero">
+        <div class="hero-icon"><i class="fa-solid fa-comments"></i></div>
+        <h1>ช่องทางการติดต่อเจ้าหน้าที่</h1>
+        <p>
+          มีข้อสงสัยหรือต้องการความช่วยเหลือ?
+          เลือกช่องทางที่คุณสะดวกที่สุดเพื่อพูดคุยกับทีมงานของเราได้ทันที
+          ข้อมูลของคุณจะถูกเก็บเป็นความลับสูงสุด
+        </p>
+      </div>
+
+      <div class="social-grid">
+        <a
+          href="https://www.facebook.com"
+          target="_blank"
+          class="social-card card-fb"
+        >
+          <div class="s-icon"><i class="fa-brands fa-facebook-f"></i></div>
+          <h4>Facebook</h4>
+          <p>E-Complaint Official</p>
+          <div class="s-btn">
+            <i class="fa-brands fa-facebook-messenger"></i> ทักแชท Inbox
+          </div>
+        </a>
+
+        <!-- ปุ่ม LINE ที่รองรับการคัดลอก ID -->
+        <div
+          class="social-card card-line"
+          onclick="copyLineID('@e-complaint')"
+          id="lineBtnBox"
+        >
+          <div class="s-icon"><i class="fa-brands fa-line"></i></div>
+          <h4 id="lineTitle">LINE Official</h4>
+          <p id="lineText">@e-complaint</p>
+          <div class="s-btn" id="lineAction">
+            <i class="fa-solid fa-copy"></i> คัดลอก ID
+          </div>
+        </div>
+
+        <a
+          href="https://www.instagram.com"
+          target="_blank"
+          class="social-card card-ig"
+        >
+          <div class="s-icon"><i class="fa-brands fa-instagram"></i></div>
+          <h4>Instagram</h4>
+          <p>@e_complaint_th</p>
+          <div class="s-btn">
+            <i class="fa-solid fa-paper-plane"></i> ส่งข้อความ DM
+          </div>
+        </a>
+      </div>
+
+      <div class="bottom-grid">
+        <div class="info-card">
+          <div class="status-box" id="officeStatusBox">
+            <div class="status-header">
+              <h4>
+                <i class="fa-regular fa-clock" style="color: #ff66a3"></i>
+                เวลาให้บริการ
+              </h4>
+              <div class="live-badge" id="liveBadge">
+                <div id="liveDot"></div>
+                <span id="liveText">กำลังตรวจสอบ...</span>
+              </div>
+            </div>
+            <p>จันทร์ - ศุกร์ : 09:00 - 16:00 น.</p>
+            <span>(หยุดเสาร์-อาทิตย์ และนักขัตฤกษ์)</span>
+          </div>
+
+          <div class="address-info">
+            <h3>
+              <i
+                class="fa-solid fa-map-location-dot"
+                style="color: #ff66a3; margin-right: 5px"
+              ></i>
+              ที่ตั้งหน่วยงาน
+            </h3>
+            <div class="address-item">
+              <i class="fa-solid fa-building"></i>
+              <p>
+                <strong>ศูนย์ราชการ อาคาร A</strong><br />ถนนแจ้งวัฒนะ
+                แขวงทุ่งสองห้อง<br />เขตหลักสี่ กทม. 10210
+              </p>
+            </div>
+            <div class="address-item">
+              <i class="fa-solid fa-phone"></i>
+              <p><strong>สายด่วน:</strong><br />02-XXX-XXXX</p>
+            </div>
+            <div class="address-item" style="margin-bottom: 0">
+              <i class="fa-solid fa-envelope"></i>
+              <p><strong>อีเมล:</strong><br />support@e-complaint.go.th</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="map-card">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d534.5965580389899!2d104.1885457435775!3d17.259037487107044!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x313c8eab93251e81%3A0x9817b3f5bd90b3ab!2z4LmC4Lij4LiH4Lie4Lii4Liy4Lia4Liy4Lil4Liq4LmI4LiH4LmA4Liq4Lij4Li04Lih4Liq4Li44LiC4Lig4Liy4Lie4LiV4Liz4Lia4Lil4Lia4LmJ4Liy4LiZ4Liq4LmI4Liy4LiH4LmB4LiB4LmJ4Lin4Liq4Lih4Liy4LiZ4Lih4Li04LiV4Lij!5e0!3m2!1sth!2sth!4v1777553803967!5m2!1sth!2sth"
+            allowfullscreen=""
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+          ></iframe>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="float-chat-btn"
+      onclick="alert('ระบบแชทสดกำลังเปิดให้บริการเร็วๆ นี้!')"
+      title="แชทกับเจ้าหน้าที่"
+    >
+      <i class="fa-solid fa-message"></i>
+    </div>
+
+    <!-- เชื่อมโยงไฟล์ JS -->
+    <script src="contact.js"></script>
+    <script src="view-toggle.js"></script>
+  </body>
+</html>

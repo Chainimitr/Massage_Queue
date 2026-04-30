@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>หน้าหลัก | E-Complaint</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <style>
+      /* แถบประกาศข่าวสาร (Marquee) */
+      .announcement-bar {
+        background: #1a1a1a;
+        color: #fff;
+        padding: 8px 0;
+        font-size: 13px;
+        overflow: hidden;
+        white-space: nowrap;
+        position: relative;
+        font-weight: 500;
+        letter-spacing: 0.5px;
+      }
+      .marquee {
+        display: inline-block;
+        animation: marquee 25s linear infinite;
+      }
+      @keyframes marquee {
+        0% {
+          transform: translateX(100vw);
+        }
+        100% {
+          transform: translateX(-100%);
+        }
+      }
+
+      /* พื้นหลัง Hero มีลูกเล่นวงกลมลอยไปมา */
+      .hero-section {
+        position: relative;
+        overflow: hidden;
+        padding: 100px 20px 160px;
+        background: linear-gradient(135deg, #fff0f5 0%, #ffffff 100%);
+        border-bottom: none;
+      }
+      .hero-shape {
+        position: absolute;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #ffb3d1, #ff66a3);
+        opacity: 0.15;
+        z-index: 0;
+        animation: floatShape 6s ease-in-out infinite alternate;
+      }
+      .shape-1 {
+        width: 400px;
+        height: 400px;
+        top: -100px;
+        left: -150px;
+        filter: blur(30px);
+      }
+      .shape-2 {
+        width: 300px;
+        height: 300px;
+        bottom: 0px;
+        right: -100px;
+        animation-delay: -3s;
+        filter: blur(20px);
+      }
+      @keyframes floatShape {
+        0% {
+          transform: translateY(0) scale(1);
+        }
+        100% {
+          transform: translateY(-40px) scale(1.05);
+        }
+      }
+
+      .hero-content {
+        position: relative;
+        z-index: 1;
+      }
+
+      /* อนิเมชันมือโบกทักทาย */
+      .wave-hand {
+        display: inline-block;
+        animation: wave 2.5s infinite;
+        transform-origin: 70% 70%;
+        font-size: 1.2em;
+      }
+      @keyframes wave {
+        0% {
+          transform: rotate(0deg);
+        }
+        10% {
+          transform: rotate(14deg);
+        }
+        20% {
+          transform: rotate(-8deg);
+        }
+        30% {
+          transform: rotate(14deg);
+        }
+        40% {
+          transform: rotate(-4deg);
+        }
+        50% {
+          transform: rotate(10deg);
+        }
+        60% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(0deg);
+        }
+      }
+
+      /* การ์ดสถิติลอยทะลุกรอบ (Glassmorphism) */
+      .quick-stats-wrapper {
+        max-width: 1000px;
+        margin: -90px auto 40px;
+        position: relative;
+        z-index: 10;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        padding: 0 20px;
+      }
+      .quick-stat {
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(15px);
+        padding: 25px 20px;
+        border-radius: 20px;
+        box-shadow: 0 15px 35px rgba(255, 102, 163, 0.08);
+        text-align: center;
+        border: 1px solid rgba(255, 255, 255, 0.6);
+        animation: slideUpFade 0.6s ease backwards;
+        transition: 0.3s;
+      }
+      .quick-stat:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 40px rgba(255, 102, 163, 0.15);
+      }
+      .quick-stat:nth-child(1) {
+        animation-delay: 0.1s;
+      }
+      .quick-stat:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+      .quick-stat:nth-child(3) {
+        animation-delay: 0.3s;
+      }
+      .quick-stat i {
+        font-size: 35px;
+        margin-bottom: 12px;
+        background: -webkit-linear-gradient(#ff66a3, #ff4d94);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .quick-stat h4 {
+        color: #1a1a1a;
+        font-size: 18px;
+        margin-bottom: 5px;
+      }
+      .quick-stat p {
+        color: #888;
+        font-size: 13px;
+        margin: 0;
+      }
+
+      /* ป้าย HOT กะพริบเตะตา */
+      .service-card {
+        position: relative;
+        transition: all 0.3s ease;
+      }
+      .service-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+      }
+      .hot-badge {
+        position: absolute;
+        top: -15px;
+        right: -10px;
+        background: linear-gradient(135deg, #ff416c, #ff4b2b);
+        color: #fff;
+        padding: 5px 15px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: bold;
+        box-shadow: 0 5px 15px rgba(255, 65, 108, 0.4);
+        transform: rotate(15deg);
+        animation: pulseHot 2s infinite;
+        border: 2px solid #fff;
+      }
+      @keyframes pulseHot {
+        0% {
+          transform: rotate(15deg) scale(1);
+        }
+        50% {
+          transform: rotate(15deg) scale(1.1);
+        }
+        100% {
+          transform: rotate(15deg) scale(1);
+        }
+      }
+
+      @keyframes slideUpFade {
+        0% {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @media (max-width: 768px) {
+        .quick-stats-wrapper {
+          grid-template-columns: 1fr;
+          margin-top: -50px;
+        }
+        .hero-section {
+          padding: 80px 20px 80px;
+        }
+      }
+    </style>
+  </head>
+  <body class="page-body">
+    <div class="announcement-bar">
+      <div class="marquee">
+        <i class="fa-solid fa-bullhorn" style="color: #ffb3d1"></i> ประกาศ:
+        ยินดีต้อนรับสู่ระบบ E-Complaint รูปแบบใหม่ ให้บริการตลอด 24 ชั่วโมง
+        รวดเร็ว โปร่งใส ตรวจสอบได้!
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <i class="fa-solid fa-sparkles" style="color: #fbbc04"></i> ฟีเจอร์ใหม่:
+        สามารถเช็คสถานะคิวแบบเรียลไทม์ได้แล้ววันนี้ ผ่านเมนู "ติดตามสถานะ"
+      </div>
+    </div>
+
+    <nav class="navbar">
+      <div class="logo">
+        <i class="fa-solid fa-building-columns"></i> E-Complaint
+        <span>Portal</span>
+      </div>
+      <div class="nav-menu">
+        <button
+          onclick="location.href = 'my-bookings.html'"
+          class="logout-btn"
+          style="background: #ffe6f0; color: #ff66a3"
+        >
+          <i class="fa-solid fa-ticket"></i> กระเป๋าตั๋วของฉัน
+        </button>
+        <button id="logoutBtn" class="logout-btn">
+          <i class="fa-solid fa-arrow-right-from-bracket"></i> ออกจากระบบ
+        </button>
+      </div>
+    </nav>
+
+    <header class="hero-section">
+      <div class="hero-shape shape-1"></div>
+      <div class="hero-shape shape-2"></div>
+
+      <div class="hero-content text-center">
+        <p
+          id="dynamicGreeting"
+          style="
+            font-size: 20px;
+            color: #ff66a3;
+            font-weight: 600;
+            margin-bottom: 10px;
+          "
+        ></p>
+        <h1 style="font-size: 46px; letter-spacing: -1px">
+          ระบบบริการออนไลน์ <span style="color: #ff66a3">24 ชม.</span>
+        </h1>
+        <p style="font-size: 18px; max-width: 600px; margin: 0 auto 35px">
+          ยกระดับการให้บริการประชาชนที่สะดวก รวดเร็ว และเข้าถึงง่ายกว่าเดิม
+          ยื่นเรื่องจบในที่เดียว ไม่ต้องรอคิวนาน
+        </p>
+
+        <button
+          onclick="location.href = 'booking.html'"
+          class="primary-btn"
+          style="box-shadow: 0 10px 25px rgba(255, 102, 163, 0.4)"
+        >
+          <i class="fa-solid fa-calendar-plus fa-bounce"></i> จองคิว /
+          ยื่นคำร้องใหม่
+        </button>
+      </div>
+    </header>
+
+    <div class="quick-stats-wrapper">
+      <div class="quick-stat">
+        <i class="fa-solid fa-shield-halved"></i>
+        <h4>ปลอดภัยสูงสุด</h4>
+        <p>ข้อมูลถูกเข้ารหัสอย่างแน่นหนา</p>
+      </div>
+      <div class="quick-stat">
+        <i class="fa-solid fa-bolt"></i>
+        <h4>สะดวกรวดเร็ว</h4>
+        <p>ลดเวลาการรอคิวลงกว่า 50%</p>
+      </div>
+      <div class="quick-stat">
+        <i class="fa-solid fa-clock-rotate-left"></i>
+        <h4>ติดตามได้ 24 ชม.</h4>
+        <p>เช็คสถานะเรียลไทม์ได้ทุกที่</p>
+      </div>
+    </div>
+
+    <section
+      class="services-section"
+      style="padding-top: 40px; padding-bottom: 80px"
+    >
+      <div class="text-center" style="margin-bottom: 50px">
+        <span
+          style="
+            color: #ff66a3;
+            font-weight: 700;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+          "
+          >Our Services</span
+        >
+        <h2 style="font-size: 32px; color: #1a1a1a; margin-top: 10px">
+          บริการเด่นของเรา
+        </h2>
+      </div>
+
+      <div class="services-grid">
+        <div
+          class="service-card"
+          onclick="location.href = '#'"
+          style="cursor: pointer"
+        >
+          <div class="hot-badge">นิยมสุด 🔥</div>
+          <div class="card-icon">
+            <i class="fa-solid fa-file-signature"></i>
+          </div>
+          <h3>ยื่นเรื่องร้องเรียน</h3>
+          <p>
+            รวดเร็ว ปลอดภัย ส่งตรงถึงเจ้าหน้าที่ผู้รับผิดชอบโดยตรง
+            พร้อมรับเลขคิวทันที
+          </p>
+        </div>
+
+        <div class="service-card">
+          <div class="card-icon" style="background: #e8f0fe; color: #1a73e8">
+            <i class="fa-solid fa-magnifying-glass-location"></i>
+          </div>
+          <h3>ติดตามสถานะ</h3>
+          <p>ตรวจสอบคิวของคุณ และประเมินเวลารอแบบวินาทีต่อวินาที</p>
+          <button
+            onclick="location.href = 'status.html'"
+            class="primary-btn w-100"
+            style="
+              margin-top: 20px;
+              padding: 12px;
+              background: #1a73e8;
+              box-shadow: 0 4px 15px rgba(26, 115, 232, 0.3);
+            "
+          >
+            <i class="fa-solid fa-search"></i> เช็คสถานะคิว
+          </button>
+        </div>
+
+        <!-- ✅ แก้ไข: ลิงก์ไปหน้า contact.html -->
+        <div
+          class="service-card"
+          onclick="location.href = 'contact.html'"
+          style="cursor: pointer"
+        >
+          <div class="card-icon" style="background: #fff0f5; color: #ff66a3">
+            <i class="fa-solid fa-headset"></i>
+          </div>
+          <h3>ติดต่อสอบถาม / ปรึกษา</h3>
+          <p>
+            พูดคุยกับเจ้าหน้าที่ผ่านช่องทางออนไลน์ Facebook, LINE หรือ Instagram
+            ได้ตลอดเวลาทำการ
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <script src="home.js"></script>
+    <!-- 🆕 ใส่บรรทัดนี้เพิ่มเข้าไปในหน้าติดต่อ, หน้าโฮม, หน้าจองคิว, หน้าตั๋วคิว ฯลฯ -->
+    <script src="view-toggle.js"></script>
+  </body>
+</html>

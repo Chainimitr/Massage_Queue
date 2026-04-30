@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ตั๋วคิว | E-Complaint</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <style>
+      .ticket-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 80vh;
+        padding: 20px;
+        flex-direction: column;
+      }
+      .modern-ticket {
+        background: #fff;
+        width: 100%;
+        max-width: 420px;
+        border-radius: 24px;
+        box-shadow: 0 20px 50px rgba(255, 102, 163, 0.2);
+        position: relative;
+        animation: popIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+        overflow: hidden;
+        border: none;
+      }
+      @keyframes popIn {
+        0% {
+          opacity: 0;
+          transform: scale(0.8) translateY(30px);
+        }
+        100% {
+          opacity: 1;
+          transform: scale(1) translateY(0);
+        }
+      }
+      .ticket-header {
+        background: linear-gradient(135deg, #e6f4ea 0%, #c3e6cb 100%);
+        color: #1e8e3e;
+        padding: 40px 20px 30px;
+        text-align: center;
+      }
+      .ticket-header i {
+        font-size: 55px;
+        margin-bottom: 15px;
+        display: inline-block;
+        animation: bounceIcon 2s infinite;
+      }
+      @keyframes bounceIcon {
+        0%,
+        20%,
+        50%,
+        80%,
+        100% {
+          transform: translateY(0);
+        }
+        40% {
+          transform: translateY(-10px);
+        }
+        60% {
+          transform: translateY(-5px);
+        }
+      }
+      .ticket-divider {
+        position: relative;
+        border-top: 2px dashed #ddd;
+        margin: 0;
+        height: 0;
+        background: #fff;
+      }
+      .ticket-divider::before,
+      .ticket-divider::after {
+        content: "";
+        position: absolute;
+        top: -15px;
+        width: 30px;
+        height: 30px;
+        background-color: #f4f7fb;
+        border-radius: 50%;
+      }
+      .ticket-divider::before {
+        left: -15px;
+        box-shadow: inset -3px 0 5px rgba(0, 0, 0, 0.05);
+      }
+      .ticket-divider::after {
+        right: -15px;
+        box-shadow: inset 3px 0 5px rgba(0, 0, 0, 0.05);
+      }
+
+      .ticket-body {
+        padding: 30px 40px;
+        text-align: center;
+        background: #fff;
+      }
+      .queue-display h1 {
+        font-size: 60px;
+        color: #ff66a3;
+        margin: 5px 0;
+        letter-spacing: 2px;
+        text-shadow: 2px 2px 0px #ffe6f0;
+      }
+      .qr-container {
+        margin: 15px auto 25px;
+        padding: 15px;
+        background: #fff;
+        border-radius: 16px;
+        display: inline-block;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        border: 1px solid #f0f4f8;
+      }
+      .ticket-details {
+        text-align: left;
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 16px;
+        border: 1px solid #eee;
+      }
+      .ticket-footer {
+        padding: 20px 40px 30px;
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        background: #fff;
+      }
+      .btn-print {
+        background: #e8f0fe;
+        color: #1a73e8;
+        border: none;
+        padding: 15px 20px;
+        border-radius: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        flex: 1;
+        transition: 0.2s;
+        font-size: 15px;
+      }
+      .btn-print:hover {
+        background: #d2e3fc;
+        transform: translateY(-2px);
+      }
+      .ticket-footer .btn-cancel {
+        flex: 1;
+        padding: 15px 20px;
+        border-radius: 12px;
+        border: none;
+        font-size: 15px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body class="page-body">
+    <nav class="navbar">
+      <div class="logo"><i class="fa-solid fa-ticket"></i> E-Ticket</div>
+      <div class="nav-menu">
+        <button onclick="location.href = 'home.html'" class="logout-btn">
+          <i class="fa-solid fa-house"></i> กลับหน้าหลัก
+        </button>
+      </div>
+    </nav>
+
+    <div class="ticket-wrapper">
+      <div
+        id="loadingText"
+        style="text-align: center; font-size: 18px; color: #888"
+      >
+        <i
+          class="fa-solid fa-spinner fa-spin"
+          style="font-size: 30px; color: #ff66a3; margin-bottom: 15px"
+        ></i
+        ><br />กำลังสร้างตั๋วคิวของคุณ...
+      </div>
+
+      <div class="modern-ticket" id="tContent" style="display: none">
+        <div class="ticket-header">
+          <i class="fa-solid fa-circle-check"></i>
+          <h2 style="margin: 0; color: #155724; font-size: 24px">
+            จองคิวสำเร็จ!
+          </h2>
+          <p style="margin-top: 5px; font-size: 14px; opacity: 0.9">
+            โปรดบันทึกภาพนี้ไว้เพื่อแสดงต่อเจ้าหน้าที่
+          </p>
+        </div>
+
+        <div class="ticket-divider"></div>
+
+        <div class="ticket-body">
+          <div class="queue-display">
+            <span
+              style="
+                color: #888;
+                font-size: 14px;
+                font-weight: 600;
+                text-transform: uppercase;
+              "
+              >หมายเลขคิวของคุณ</span
+            >
+            <h1 id="qNum">Q-XXX</h1>
+          </div>
+
+          <div class="qr-container">
+            <img
+              id="qrImg"
+              src=""
+              alt="QR Code"
+              style="display: block; width: 140px; height: 140px"
+            />
+          </div>
+
+          <div class="ticket-details">
+            <div class="detail-row">
+              <span
+                ><i class="fa-solid fa-layer-group" style="color: #ccc"></i>
+                บริการ:</span
+              ><strong id="c-srv"></strong>
+            </div>
+            <div class="detail-row">
+              <span
+                ><i class="fa-solid fa-user-tie" style="color: #ccc"></i>
+                เจ้าหน้าที่:</span
+              ><strong id="c-staff"></strong>
+            </div>
+            <div class="detail-row">
+              <span
+                ><i class="fa-solid fa-user" style="color: #ccc"></i>
+                ผู้ติดต่อ:</span
+              ><strong id="c-name"></strong>
+            </div>
+            <div class="detail-row">
+              <span
+                ><i class="fa-regular fa-calendar" style="color: #ccc"></i>
+                วันที่:</span
+              ><strong id="c-date"></strong>
+            </div>
+            <div class="detail-row">
+              <span
+                ><i class="fa-regular fa-clock" style="color: #ccc"></i>
+                เวลา:</span
+              ><strong id="c-time" style="color: #ff66a3"></strong>
+            </div>
+            <div class="detail-row" style="margin-bottom: 0; border: none">
+              <span
+                ><i class="fa-solid fa-location-dot" style="color: #ccc"></i>
+                สถานที่:</span
+              ><strong
+                id="c-loc"
+                style="text-align: right; max-width: 60%"
+              ></strong>
+            </div>
+          </div>
+        </div>
+
+        <div class="ticket-footer">
+          <button onclick="window.print()" class="btn-print">
+            <i class="fa-solid fa-print"></i> พิมพ์ / บันทึก
+          </button>
+          <button id="cBtn" class="btn-cancel action-btn">
+            <i class="fa-solid fa-ban"></i> ยกเลิกคิว
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="confirmation.js"></script>
+    <script src="view-toggle.js"></script>
+  </body>
+</html>
