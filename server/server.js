@@ -60,7 +60,7 @@ let db = {
 // ==========================================
 // ☁️ ระบบซิงค์ข้อมูลกับ Vercel Blob (Persistence)
 // ==========================================
-const BLOB_TOKEN = process.env.BLOB_READ_WRITE_TOKEN;
+const BLOB_TOKEN = process.env.BLOB_READ_WRITE_TOKEN="vercel_blob_rw_jkxAFcUjSSLt2lAS_VS8ff25SuJvJyiZxjC46ZxerbSo6IW";
 
 async function syncFromBlob() {
   if (!BLOB_TOKEN) return;
