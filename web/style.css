@@ -779,6 +779,7 @@ body.page-body {
 /* 6. โหมดจำลองมือถือ (PREMIUM MOBILE SIMULATOR)           */
 /* ======================================================= */
 
+/* สไตล์สำหรับตัวกรอบจำลองบนคอมพิวเตอร์ */
 body.force-mobile-view {
   max-width: 414px !important;
   margin: 30px auto !important;
@@ -797,10 +798,8 @@ html:has(body.force-mobile-view) {
   background-color: #e1e5eb;
 }
 
-/* 🛑 ป้องกันตัวหนังสือแยกและจัดคำให้อ่านง่าย */
 body.force-mobile-view * {
   letter-spacing: normal !important;
-  word-break: break-word !important; /* ป้องกันข้อความยาวจนทะลุจอ */
 }
 
 body.force-mobile-view p,
@@ -810,7 +809,7 @@ body.force-mobile-view div {
   line-height: 1.5 !important;
 }
 
-/* 🛑 บังคับ Input/Button ไม่ให้ล้นจอ */
+/* บังคับ Input/Button ให้ไม่ล้นจอ */
 body.force-mobile-view button,
 body.force-mobile-view input,
 body.force-mobile-view select,
@@ -819,43 +818,7 @@ body.force-mobile-view .form-control {
   max-width: 100% !important;
 }
 
-/* 🛑 แก้ปัญหา "ปุ่มค้นหาคิวซ้อนทับ" (บังคับให้เรียงแนวตั้งเสมอ) */
-body.force-mobile-view form,
-body.force-mobile-view .search-container,
-body.force-mobile-view .input-group {
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: stretch !important;
-  gap: 10px !important;
-}
-body.force-mobile-view form button,
-body.force-mobile-view .search-container button {
-  width: 100% !important;
-  margin-left: 0 !important;
-  margin-top: 5px !important;
-}
-
-/* 🛑 แก้ปัญหา "หน้า Login แยกกัน/ห่างเกินไป" ให้กระชับขึ้น */
-body.force-mobile-view .split-layout {
-  display: flex !important;
-  flex-direction: column !important;
-  height: auto !important;
-  min-height: auto !important;
-}
-body.force-mobile-view .info-panel,
-body.force-mobile-view .login-panel {
-  padding: 25px 20px !important; /* ลดช่องว่างที่ทำให้ดูโหว่ */
-  min-height: auto !important;
-}
-body.force-mobile-view .login-card {
-  padding: 30px 20px !important; /* บีบการ์ด Login ให้พอดีจอมือถือ */
-  box-shadow: 0 10px 30px rgba(255, 102, 163, 0.1) !important;
-}
-body.force-mobile-view .logo {
-  justify-content: center !important;
-  white-space: normal !important;
-}
-
+body.force-mobile-view .split-layout,
 body.force-mobile-view .bottom-grid,
 body.force-mobile-view .social-grid,
 body.force-mobile-view .quick-stats-wrapper,
@@ -868,10 +831,18 @@ body.force-mobile-view .wizard-buttons {
   width: 100% !important;
 }
 
-body.force-mobile-view h1 { font-size: 26px !important; }
-body.force-mobile-view h2 { font-size: 22px !important; }
-body.force-mobile-view h3 { font-size: 18px !important; }
-body.force-mobile-view .contact-hero h1 { font-size: 28px !important; }
+body.force-mobile-view h1 {
+  font-size: 26px !important;
+}
+body.force-mobile-view h2 {
+  font-size: 22px !important;
+}
+body.force-mobile-view h3 {
+  font-size: 18px !important;
+}
+body.force-mobile-view .contact-hero h1 {
+  font-size: 28px !important;
+}
 
 /* จัดการปุ่มแชทลอย */
 body.force-mobile-view .float-chat-btn {
@@ -884,8 +855,13 @@ body.force-mobile-view .float-chat-btn {
 }
 
 /* ซ่อน Scrollbar ของตัวจำลอง */
-body.force-mobile-view::-webkit-scrollbar { width: 4px; }
-body.force-mobile-view::-webkit-scrollbar-thumb { background: #ccc; border-radius: 10px; }
+body.force-mobile-view::-webkit-scrollbar {
+  width: 4px;
+}
+body.force-mobile-view::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 10px;
+}
 
 /* ปุ่มกดสลับโหมด */
 .view-toggle-btn {
@@ -913,7 +889,6 @@ body.force-mobile-view::-webkit-scrollbar-thumb { background: #ccc; border-radiu
   background: linear-gradient(135deg, #ff66a3 0%, #e64d8a 100%);
 }
 
-
 /* ======================================================= */
 /* 7. ระบบ RESPONSIVE อัตโนมัติ (Media Queries ของจริง)      */
 /* ======================================================= */
@@ -926,72 +901,107 @@ body.force-mobile-view::-webkit-scrollbar-thumb { background: #ccc; border-radiu
     grid-template-columns: repeat(2, 1fr) !important;
   }
   .admin-container,
-  .booking-wrapper { padding: 15px; }
-  .queue-control-panel .current-call-box h1 { font-size: 56px; }
+  .booking-wrapper {
+    padding: 15px;
+  }
+  .queue-control-panel .current-call-box h1 {
+    font-size: 56px;
+  }
 }
 
 @media (max-width: 900px) {
-  .split-layout { flex-direction: column; }
-  
-  /* กระชับหน้า Login ให้ดูต่อเนื่อง ไม่โหว่ */
+  .split-layout {
+    flex-direction: column;
+  }
   .info-panel,
   .login-panel {
-    padding: 30px 20px;
+    padding: 40px 20px;
     text-align: center;
-    min-height: auto; 
   }
-  .features-list { justify-content: center; }
+  .features-list {
+    justify-content: center;
+  }
 }
 
 /* 📱 สำหรับสมาร์ทโฟนทั่วไป */
 @media (max-width: 768px) {
-  
   /* 🛑 ซ่อนโหมดจำลองถ้ายูสเซอร์เปิดด้วยมือถือจริง */
   body.force-mobile-view {
-    max-width: 100% !important; margin: 0 !important; border: none !important;
-    border-radius: 0 !important; height: auto !important; min-height: 100vh !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    border: none !important;
+    border-radius: 0 !important;
+    height: auto !important;
+    min-height: 100vh !important;
     box-shadow: none !important;
   }
-  .view-toggle-btn { display: none !important; }
-
-  /* 🛑 แก้ปัญหาช่องค้นหาคิวและปุ่มค้นหา เกยทับกัน */
-  form, .search-container, .input-group {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: stretch !important;
-    gap: 10px;
-  }
-  form button, .search-container button {
-    width: 100% !important;
-    margin-left: 0 !important;
+  .view-toggle-btn {
+    display: none !important;
   }
 
   /* บังคับ 1 คอลัมน์ */
-  .bottom-grid, .social-grid, .quick-stats-wrapper,
-  .services-grid, .dashboard-stats, .staff-grid, #srvForm {
+  .bottom-grid,
+  .social-grid,
+  .quick-stats-wrapper,
+  .services-grid,
+  .dashboard-stats,
+  .staff-grid,
+  #srvForm {
     display: flex !important;
     flex-direction: column !important;
     gap: 15px !important;
   }
 
-  .navbar { flex-direction: column; gap: 15px; padding: 15px; text-align: center; }
-  .nav-menu { width: 100%; flex-wrap: wrap; justify-content: center; gap: 10px; }
+  .navbar {
+    flex-direction: column;
+    gap: 15px;
+    padding: 15px;
+    text-align: center;
+  }
+  .nav-menu {
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
 
-  h1 { font-size: 24px !important; }
-  h2 { font-size: 20px !important; }
-  h3 { font-size: 18px !important; }
-  .contact-hero h1 { font-size: 26px !important; }
-  .queue-control-panel .current-call-box h1 { font-size: 48px !important; }
+  h1 {
+    font-size: 24px !important;
+  }
+  h2 {
+    font-size: 20px !important;
+  }
+  h3 {
+    font-size: 18px !important;
+  }
+  .contact-hero h1 {
+    font-size: 26px !important;
+  }
+  .queue-control-panel .current-call-box h1 {
+    font-size: 48px !important;
+  }
 
   /* ยืดปุ่มให้เต็มนิ้วกด */
-  .primary-btn, .logout-btn, .wizard-buttons button, .form-control {
+  .primary-btn,
+  .logout-btn,
+  .wizard-buttons button,
+  .form-control {
     width: 100% !important;
     margin-bottom: 5px;
   }
 
-  .wizard-progress { padding: 0 5px; }
-  .step-indicator { width: 35px; height: 35px; font-size: 14px; }
-  .step-label { font-size: 11px; bottom: -20px; }
+  .wizard-progress {
+    padding: 0 5px;
+  }
+  .step-indicator {
+    width: 35px;
+    height: 35px;
+    font-size: 14px;
+  }
+  .step-label {
+    font-size: 11px;
+    bottom: -20px;
+  }
 
   /* 📜 ตารางแอดมินเลื่อนซ้ายขวาได้ ไม่ล้นจอ */
   .admin-card {
@@ -999,15 +1009,31 @@ body.force-mobile-view::-webkit-scrollbar-thumb { background: #ccc; border-radiu
     overflow-x: auto !important;
     -webkit-overflow-scrolling: touch;
   }
-  .data-table { min-width: 600px; }
+  .data-table {
+    min-width: 600px;
+  }
 
-  .float-chat-btn { bottom: 20px; right: 20px; width: 50px; height: 50px; }
+  .float-chat-btn {
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+  }
 }
 
 /* 🛑 สำหรับมือถือจอเล็กมากๆ (iPhone SE) */
 @media (max-width: 400px) {
-  .live-clock { font-size: 14px; }
-  .staff-card { padding: 15px 10px; }
-  .staff-img { width: 65px; height: 65px; }
-  .queue-control-panel .current-call-box h1 { font-size: 40px !important; }
+  .live-clock {
+    font-size: 14px;
+  }
+  .staff-card {
+    padding: 15px 10px;
+  }
+  .staff-img {
+    width: 65px;
+    height: 65px;
+  }
+  .queue-control-panel .current-call-box h1 {
+    font-size: 40px !important;
+  }
 }
