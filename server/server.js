@@ -60,7 +60,10 @@ let db = {
 // ==========================================
 // ☁️ ระบบซิงค์ข้อมูลกับ Vercel Blob (Persistence)
 // ==========================================
-const BLOB_TOKEN = process.env.BLOB_READ_WRITE_TOKEN="vercel_blob_rw_jkxAFcUjSSLt2lAS_VS8ff25SuJvJyiZxjC46ZxerbSo6IW";
+// ✅ ใส่ Token ตามที่คุณระบุมา (ใช้ || เพื่อเผื่อกรณี Vercel ดึงค่าจาก Env ให้เอง)
+const BLOB_TOKEN =
+  process.env.BLOB_READ_WRITE_TOKEN ||
+  "vercel_blob_rw_jkxAFcUjSSLt2lAS_VS8ff25SuJvJyiZxjC46ZxerbSo6IW";
 
 async function syncFromBlob() {
   if (!BLOB_TOKEN) return;
@@ -279,7 +282,10 @@ app.post("/api/check-queue", (req, res) => {
 
 // --- 👑 Admin Functions ---
 app.get("/api/admin/stats", (req, res) => {
-  const today = new Date().toISOString().split("T")[0];
+  // ✅ แก้ไข Timezone เป็นประเทศไทย
+  const today = new Date().toLocaleDateString("en-CA", {
+    timeZone: "Asia/Bangkok",
+  });
   const tb = db.bookings.filter((x) => x.bookingDate === today);
   const peak = {};
   generateSlots(60, 10).forEach(
@@ -299,7 +305,10 @@ app.get("/api/admin/stats", (req, res) => {
 });
 
 app.get("/api/admin/today-queues", (req, res) => {
-  const today = new Date().toISOString().split("T")[0];
+  // ✅ แก้ไข Timezone เป็นประเทศไทย
+  const today = new Date().toLocaleDateString("en-CA", {
+    timeZone: "Asia/Bangkok",
+  });
   res.json(
     db.bookings
       .filter((x) => x.bookingDate === today)
@@ -317,7 +326,10 @@ app.put("/api/admin/queues/:id/status", async (req, res) => {
 });
 
 app.post("/api/admin/next-queue", async (req, res) => {
-  const today = new Date().toISOString().split("T")[0];
+  // ✅ แก้ไข Timezone เป็นประเทศไทย
+  const today = new Date().toLocaleDateString("en-CA", {
+    timeZone: "Asia/Bangkok",
+  });
   const next = db.bookings
     .filter((x) => x.bookingDate === today && x.status === "รอดำเนินการ")
     .sort((a, b) => a.time.localeCompare(b.time))[0];
@@ -335,6 +347,10 @@ app.post("/api/admin/next-queue", async (req, res) => {
 app.post("/api/admin/urgent-booking", async (req, res) => {
   const u = {
     ...req.body,
+    // ✅ แก้ไข Timezone เป็นประเทศไทยสำหรับคิวด่วน
+    bookingDate: new Date().toLocaleDateString("en-CA", {
+      timeZone: "Asia/Bangkok",
+    }),
     id: Date.now().toString(),
     queueNumber: "URG-" + Math.floor(100 + Math.random() * 899),
     status: "กำลังให้บริการ",
