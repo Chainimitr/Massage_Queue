@@ -60,7 +60,7 @@ let db = {
 // ==========================================
 // ☁️ ระบบซิงค์ข้อมูลกับ Vercel Blob (Persistence)
 // ==========================================
-// ✅ ใส่ Token ตามที่คุณระบุมา (ใช้ || เพื่อเผื่อกรณี Vercel ดึงค่าจาก Env ให้เอง)
+// ✅ ใส่ Token ตามที่คุณระบุมา
 const BLOB_TOKEN =
   process.env.BLOB_READ_WRITE_TOKEN ||
   "vercel_blob_rw_jkxAFcUjSSLt2lAS_VS8ff25SuJvJyiZxjC46ZxerbSo6IW";
@@ -74,7 +74,17 @@ async function syncFromBlob() {
       const res = await fetch(dbFile.url);
       const data = await res.json();
       if (data && data.users) {
+        
+        // 🛑 [จุดที่แก้ไข] 🛑
+        // ดึงข้อมูล staff จากโค้ดล่าสุด (db.staff) มาเก็บไว้ก่อน
+        // ป้องกันไม่ให้ Vercel Blob เอาข้อมูลเก่ามาทับ ทำให้สามารถเปลี่ยนรูป/ชื่อได้ทันที
+        const latestStaff = db.staff;
+        
         db = data;
+        
+        // ยัดข้อมูล staff จากโค้ดล่าสุดกลับเข้าไป
+        db.staff = latestStaff;
+        
         console.log("✅ Database Loaded from Blob");
       }
     } else {
