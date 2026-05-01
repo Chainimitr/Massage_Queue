@@ -28,7 +28,7 @@ let db = {
       id: "1",
       name: "สมชาย",
       role: "ผู้เชี่ยวชาญด้านเอกสาร",
-      image: "img/staff-1.png",
+      image: "img/s001.png",
     },
     {
       id: "2",
