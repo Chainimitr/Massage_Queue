@@ -24,106 +24,80 @@
         z-index: 0;
         animation: floatBubble 8s infinite alternate ease-in-out;
       }
-      .shape-a {
-        width: 400px;
-        height: 400px;
-        top: -100px;
-        left: -100px;
-        filter: blur(25px);
-      }
-      .shape-b {
-        width: 300px;
-        height: 300px;
-        bottom: 5%;
-        right: -50px;
-        animation-delay: -3s;
-        filter: blur(20px);
-      }
+      .shape-a { width: 400px; height: 400px; top: -100px; left: -100px; filter: blur(25px); }
+      .shape-b { width: 300px; height: 300px; bottom: 5%; right: -50px; animation-delay: -3s; filter: blur(20px); }
 
       @keyframes floatBubble {
-        0% {
-          transform: translateY(0) scale(1);
-        }
-        100% {
-          transform: translateY(-40px) scale(1.05);
-        }
+        0% { transform: translateY(0) scale(1); }
+        100% { transform: translateY(-40px) scale(1.05); }
       }
 
-      .info-content {
-        position: relative;
-        z-index: 1;
-      }
-
+      .info-content { position: relative; z-index: 1; }
       .info-content > * {
         animation: fadeSlideUp 0.8s forwards cubic-bezier(0.2, 0.8, 0.2, 1);
         opacity: 0;
       }
-      .info-content .logo {
-        animation-delay: 0.1s;
-      }
-      .info-content h1 {
-        animation-delay: 0.2s;
-      }
-      .info-content > p {
-        animation-delay: 0.3s;
-      }
-      .info-content .video-guide-box {
-        animation-delay: 0.4s;
-      }
-      .info-content .features-list {
-        animation-delay: 0.5s;
-      }
+      .info-content .logo { animation-delay: 0.1s; }
+      .info-content h1 { animation-delay: 0.2s; }
+      .info-content > p { animation-delay: 0.3s; }
+      .info-content .video-guide-box { animation-delay: 0.4s; }
+      .info-content .features-wrapper { animation-delay: 0.5s; }
 
       @keyframes fadeSlideUp {
-        0% {
-          opacity: 0;
-          transform: translateY(30px);
-        }
-        100% {
-          opacity: 1;
-          transform: translateY(0);
-        }
+        0% { opacity: 0; transform: translateY(30px); }
+        100% { opacity: 1; transform: translateY(0); }
       }
 
       .video-guide-box {
-        background: rgba(255, 255, 255, 0.6);
-        backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 255, 255, 0.8);
-        box-shadow: 0 15px 35px rgba(255, 102, 163, 0.08);
+        background: rgba(255, 255, 255, 0.6); backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.8); box-shadow: 0 15px 35px rgba(255, 102, 163, 0.08);
       }
 
-      /* ✅ โค้ดปรับป้ายฟีเจอร์ให้เรียงแนวนอน 100% (ไม่กระทบ style.css) */
+      /* ================= ลูกเล่น Auto-Marquee (แถบเลื่อนอัตโนมัติ) ================= */
+      .features-wrapper {
+        width: 100%;
+        overflow: hidden;
+        position: relative;
+        padding: 10px 0;
+        /* ทำขอบให้เบลอๆ จางๆ ซ้าย-ขวา ดูพรีเมียม */
+        -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+        mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+      }
+
       .features-list {
         display: flex !important;
         flex-direction: row !important;
-        flex-wrap: nowrap !important; /* ห้ามตกบรรทัดเด็ดขาด */
-        justify-content: center !important;
-        gap: 15px !important;
-        overflow-x: auto; /* อนุญาตให้ปัดซ้าย-ขวาได้ถ้าจอเล็ก */
-        -webkit-overflow-scrolling: touch;
-        scrollbar-width: none; /* ซ่อน scrollbar (Firefox) */
+        flex-wrap: nowrap !important;
+        width: max-content !important; /* ให้กว้างตามเนื้อหาจริง */
+        --gap: 15px;
+        gap: var(--gap) !important;
+        /* แอนิเมชันเลื่อนซ้ายอัตโนมัติ */
+        animation: marqueeScroll 15s linear infinite;
       }
-      .features-list::-webkit-scrollbar {
-        display: none; /* ซ่อน scrollbar (Chrome/Safari) */
+
+      /* หยุดเลื่อนเมื่อเอานิ้วจิ้มหรือเมาส์ชี้ */
+      .features-list:hover {
+        animation-play-state: paused;
+      }
+
+      @keyframes marqueeScroll {
+        0% { transform: translateX(0); }
+        /* เลื่อนไปครึ่งทางพอดี เพื่อให้ลูปกลับมาเนียนกริบ */
+        100% { transform: translateX(calc(-50% - (var(--gap) / 2))); }
       }
 
       .feature-item {
-        white-space: nowrap !important; /* กันคำฉีกขาดในปุ่ม */
-        flex-shrink: 0 !important; /* ป้องกันการโดนบีบจนเสียทรง */
+        white-space: nowrap !important;
+        flex-shrink: 0 !important;
         transition: 0.3s;
-      }
-
-      /* ย่อขนาดฟอนต์ลงเมื่อแสดงบนมือถือ ให้เรียงพอดีจอที่สุด */
-      @media (max-width: 768px) {
-        .features-list {
-          gap: 8px !important;
-          justify-content: flex-start !important; /* ให้ปัดจากซ้ายไปขวาได้สมูท */
-          padding-bottom: 5px;
-        }
-        .feature-item {
-          font-size: 13px !important;
-          padding: 8px 14px !important;
-        }
+        background: white;
+        padding: 10px 20px;
+        border-radius: 30px;
+        font-size: 14px;
+        color: #555;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+        font-weight: 500;
+        border: 1px solid transparent;
       }
 
       .feature-item:hover {
@@ -132,43 +106,35 @@
         border-color: #ffb3d1;
       }
 
-      .login-panel {
-        background-color: #fff;
-        position: relative;
+      /* ปรับขนาดบนมือถือให้เลื่อนสมูทขึ้น */
+      @media (max-width: 768px) {
+        .features-list {
+          --gap: 10px;
+          animation-duration: 12s; /* เลื่อนเร็วขึ้นนิดนึงบนจอมือถือ */
+        }
+        .feature-item {
+          font-size: 13px !important;
+          padding: 8px 16px !important;
+        }
       }
+
+      /* ========================================================================= */
+
+      .login-panel { background-color: #fff; position: relative; }
       .login-card {
-        background: #fff !important;
-        border: 1px solid #f0f4f8 !important;
+        background: #fff !important; border: 1px solid #f0f4f8 !important;
         box-shadow: 0 25px 50px rgba(255, 102, 163, 0.1) !important;
-        animation: popInCard 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275)
-          forwards;
-        opacity: 0;
+        animation: popInCard 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; opacity: 0;
       }
 
       @keyframes popInCard {
-        0% {
-          opacity: 0;
-          transform: scale(0.9) translateY(20px);
-        }
-        100% {
-          opacity: 1;
-          transform: scale(1) translateY(0);
-        }
+        0% { opacity: 0; transform: scale(0.9) translateY(20px); }
+        100% { opacity: 1; transform: scale(1) translateY(0); }
       }
 
-      .input-group label i {
-        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-        color: #aaa;
-        margin-right: 5px;
-      }
-      .input-group:focus-within label i {
-        color: #ff66a3;
-        transform: scale(1.2) rotate(-5deg);
-      }
-      .input-group:focus-within label {
-        color: #ff66a3;
-        font-weight: 600;
-      }
+      .input-group label i { transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); color: #aaa; margin-right: 5px; }
+      .input-group:focus-within label i { color: #ff66a3; transform: scale(1.2) rotate(-5deg); }
+      .input-group:focus-within label { color: #ff66a3; font-weight: 600; }
     </style>
   </head>
   <body>
@@ -178,70 +144,60 @@
         <div class="login-shape shape-b"></div>
 
         <div class="info-content">
-          <!-- ✅ โลโก้ไม่ฉีกขาดและล็อกสีชมพู -->
           <div class="logo" style="margin-bottom: 20px; font-size: 32px">
             <i class="fa-solid fa-building-columns" style="color: #ff66a3;"></i>
             <span style="white-space: nowrap; color: #ff66a3;">E-Complaint</span>
             <span style="color: #333;">Portal</span>
           </div>
 
-          <h1
-            style="
-              color: #1a1a1a;
-              margin-bottom: 15px;
-              font-size: 38px;
-              font-weight: 700;
-              letter-spacing: -0.5px;
-            "
-          >
+          <h1 style="color: #1a1a1a; margin-bottom: 15px; font-size: 38px; font-weight: 700; letter-spacing: -0.5px;">
             ระบบรับเรื่องร้องเรียนออนไลน์
           </h1>
 
-          <p
-            style="
-              color: #555;
-              font-size: 16px;
-              margin-bottom: 40px;
-              line-height: 1.8;
-            "
-          >
-            ยกระดับการให้บริการประชาชน สะดวกรวดเร็ว โปร่งใส
-            ตรวจสอบได้ทุกขั้นตอน<br />
+          <p style="color: #555; font-size: 16px; margin-bottom: 40px; line-height: 1.8;">
+            ยกระดับการให้บริการประชาชน สะดวกรวดเร็ว โปร่งใส ตรวจสอบได้ทุกขั้นตอน<br />
             ยื่นคำร้อง จองคิว หรือติดต่อเจ้าหน้าที่ได้ง่ายๆ ตลอด 24 ชั่วโมง
           </p>
 
           <div class="video-guide-box">
             <h3 style="font-size: 16px; color: #ff66a3; margin-bottom: 15px">
-              <i
-                class="fa-solid fa-circle-play fa-beat-fade"
-                style="--fa-beat-fade-opacity: 0.6; --fa-beat-fade-scale: 1.1"
-              ></i>
+              <i class="fa-solid fa-circle-play fa-beat-fade" style="--fa-beat-fade-opacity: 0.6; --fa-beat-fade-scale: 1.1"></i>
               วิดีโอแนะนำการใช้งาน
             </h3>
             <div class="video-container">
               <iframe
                 src="https://www.youtube.com/embed/XZ-v8YgdCk8?si=_lRQD9z0Zk9Wniai"
-                frameborder="0"
-                allowfullscreen
-              ></iframe>
+                frameborder="0" allowfullscreen></iframe>
             </div>
           </div>
 
-          <!-- ✅ รายการฟีเจอร์จะแสดงผลแนวนอน 100% -->
-          <div class="features-list">
-            <div class="feature-item">
-              <i class="fa-solid fa-check" style="color: #1e8e3e"></i>
-              ใช้งานง่าย ไม่ซับซ้อน
-            </div>
-            <div class="feature-item">
-              <i class="fa-solid fa-check" style="color: #1e8e3e"></i>
-              ติดตามสถานะเรียลไทม์
-            </div>
-            <div class="feature-item">
-              <i class="fa-solid fa-check" style="color: #1e8e3e"></i>
-              ข้อมูลปลอดภัย 100%
+          <!-- ✅ กล่องคลุมลูกเล่น Auto-Marquee -->
+          <div class="features-wrapper">
+            <div class="features-list">
+              <!-- ชุดที่ 1 -->
+              <div class="feature-item">
+                <i class="fa-solid fa-wand-magic-sparkles" style="color: #ff66a3"></i> ใช้งานง่าย ไม่ซับซ้อน
+              </div>
+              <div class="feature-item">
+                <i class="fa-solid fa-bolt" style="color: #ffb300"></i> ติดตามสถานะเรียลไทม์
+              </div>
+              <div class="feature-item">
+                <i class="fa-solid fa-shield-halved" style="color: #1e8e3e"></i> ข้อมูลปลอดภัย 100%
+              </div>
+              
+              <!-- ชุดที่ 2 (ก๊อปปี้มาต่อท้าย เพื่อให้มันวนลูปอัตโนมัติแบบเนียนตา ไม่กระตุก) -->
+              <div class="feature-item">
+                <i class="fa-solid fa-wand-magic-sparkles" style="color: #ff66a3"></i> ใช้งานง่าย ไม่ซับซ้อน
+              </div>
+              <div class="feature-item">
+                <i class="fa-solid fa-bolt" style="color: #ffb300"></i> ติดตามสถานะเรียลไทม์
+              </div>
+              <div class="feature-item">
+                <i class="fa-solid fa-shield-halved" style="color: #1e8e3e"></i> ข้อมูลปลอดภัย 100%
+              </div>
             </div>
           </div>
+
         </div>
       </div>
 
@@ -252,38 +208,18 @@
 
           <form id="loginForm">
             <div class="input-group">
-              <label for="username"
-                ><i class="fa-solid fa-user"></i> ชื่อผู้ใช้งาน</label
-              >
-              <input
-                type="text"
-                id="username"
-                placeholder="กรอกชื่อผู้ใช้ของคุณ"
-                required
-                autocomplete="off"
-              />
+              <label for="username"><i class="fa-solid fa-user"></i> ชื่อผู้ใช้งาน</label>
+              <input type="text" id="username" placeholder="กรอกชื่อผู้ใช้ของคุณ" required autocomplete="off" />
             </div>
 
             <div class="input-group">
-              <label for="password"
-                ><i class="fa-solid fa-lock"></i> รหัสผ่าน</label
-              >
-              <input
-                type="password"
-                id="password"
-                placeholder="กรอกรหัสผ่านของคุณ"
-                required
-              />
+              <label for="password"><i class="fa-solid fa-lock"></i> รหัสผ่าน</label>
+              <input type="password" id="password" placeholder="กรอกรหัสผ่านของคุณ" required />
             </div>
 
             <div id="alertMsg" class="alert hidden"></div>
 
-            <button
-              type="submit"
-              id="submitBtn"
-              class="primary-btn w-100"
-              style="padding: 16px; font-size: 18px; margin-top: 15px"
-            >
+            <button type="submit" id="submitBtn" class="primary-btn w-100" style="padding: 16px; font-size: 18px; margin-top: 15px">
               <i class="fa-solid fa-right-to-bracket"></i> เข้าสู่ระบบ
             </button>
 
