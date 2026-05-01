@@ -92,9 +92,40 @@
         box-shadow: 0 15px 35px rgba(255, 102, 163, 0.08);
       }
 
+      /* ✅ โค้ดปรับป้ายฟีเจอร์ให้เรียงแนวนอน 100% (ไม่กระทบ style.css) */
+      .features-list {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important; /* ห้ามตกบรรทัดเด็ดขาด */
+        justify-content: center !important;
+        gap: 15px !important;
+        overflow-x: auto; /* อนุญาตให้ปัดซ้าย-ขวาได้ถ้าจอเล็ก */
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none; /* ซ่อน scrollbar (Firefox) */
+      }
+      .features-list::-webkit-scrollbar {
+        display: none; /* ซ่อน scrollbar (Chrome/Safari) */
+      }
+
       .feature-item {
+        white-space: nowrap !important; /* กันคำฉีกขาดในปุ่ม */
+        flex-shrink: 0 !important; /* ป้องกันการโดนบีบจนเสียทรง */
         transition: 0.3s;
       }
+
+      /* ย่อขนาดฟอนต์ลงเมื่อแสดงบนมือถือ ให้เรียงพอดีจอที่สุด */
+      @media (max-width: 768px) {
+        .features-list {
+          gap: 8px !important;
+          justify-content: flex-start !important; /* ให้ปัดจากซ้ายไปขวาได้สมูท */
+          padding-bottom: 5px;
+        }
+        .feature-item {
+          font-size: 13px !important;
+          padding: 8px 14px !important;
+        }
+      }
+
       .feature-item:hover {
         transform: translateY(-3px);
         box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
@@ -147,7 +178,7 @@
         <div class="login-shape shape-b"></div>
 
         <div class="info-content">
-          <!-- ✅ แก้ไขโลโก้: ล็อกไม่ให้คำฉีกขาด และตั้งค่าสีให้ถูกต้อง -->
+          <!-- ✅ โลโก้ไม่ฉีกขาดและล็อกสีชมพู -->
           <div class="logo" style="margin-bottom: 20px; font-size: 32px">
             <i class="fa-solid fa-building-columns" style="color: #ff66a3;"></i>
             <span style="white-space: nowrap; color: #ff66a3;">E-Complaint</span>
@@ -196,6 +227,7 @@
             </div>
           </div>
 
+          <!-- ✅ รายการฟีเจอร์จะแสดงผลแนวนอน 100% -->
           <div class="features-list">
             <div class="feature-item">
               <i class="fa-solid fa-check" style="color: #1e8e3e"></i>
