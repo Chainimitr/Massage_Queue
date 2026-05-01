@@ -151,6 +151,54 @@
         font-size: 15px;
         cursor: pointer;
       }
+
+      /* ========================================================= */
+      /* 🖨️ โหมดสั่งพิมพ์ (Print Mode): จัดหน้าให้พอดี A4 1 หน้าเท่านั้น */
+      /* ========================================================= */
+      @media print {
+        /* บังคับพิมพ์พื้นหลังให้สีสันติดมาด้วย (เช่นสีชมพู สีเขียว) */
+        * {
+          -webkit-print-color-adjust: exact !important;
+          print-color-adjust: exact !important;
+        }
+        
+        /* 1. ซ่อนสิ่งที่ไม่จำเป็น (แถบเมนูข้างบน, ปุ่มพิมพ์/ยกเลิก, ปุ่มเปลี่ยนมุมมอง) */
+        .navbar, 
+        .ticket-footer, 
+        .view-toggle-btn {
+          display: none !important;
+        }
+
+        /* 2. ล้างค่าระยะขอบและ Background ของหน้าจอ เพื่อไม่ให้ดันกระดาษ */
+        body, html {
+          background: #fff !important;
+          margin: 0 !important;
+          padding: 0 !important;
+        }
+        .page-body {
+          background-color: transparent !important;
+        }
+
+        /* 3. จัดตั๋วให้อยู่หน้าเดียว และห้ามฉีกขาดข้ามหน้า */
+        .ticket-wrapper {
+          min-height: auto !important;
+          padding: 0 !important;
+          margin: 0 !important;
+          display: block !important;
+        }
+        
+        .modern-ticket {
+          box-shadow: none !important; /* ลบเงาออกตอนพิมพ์จะได้คมชัด */
+          border: 1px solid #ddd !important; /* ตีเส้นขอบบางๆ ให้ดูเป็นตั๋ว */
+          margin: 20px auto !important; /* ให้อยู่ตรงกลางหน้ากระดาษ */
+          page-break-inside: avoid !important; /* 🛑 กฎเหล็ก: ห้ามฉีกตั๋วข้ามไปหน้า 2 */
+          animation: none !important; /* ปิดแอนิเมชันเด้งดึ๋งตอนปริ้นท์ */
+        }
+
+        .ticket-header i {
+          animation: none !important; /* ปิดไอคอนขยับตอนปริ้นท์ */
+        }
+      }
     </style>
   </head>
   <body class="page-body">
