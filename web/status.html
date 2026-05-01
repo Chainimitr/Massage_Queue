@@ -20,6 +20,8 @@
         border: none;
         box-shadow: 0 15px 40px rgba(0, 0, 0, 0.04);
       }
+      
+      /* ✅ ปรับ Live Badge ให้ฉลาดขึ้นบนมือถือ */
       .live-badge {
         position: absolute;
         top: 25px;
@@ -43,37 +45,79 @@
         animation: blink 1s infinite alternate;
       }
       @keyframes blink {
-        0% {
-          opacity: 1;
-          transform: scale(1);
-        }
-        100% {
-          opacity: 0.4;
-          transform: scale(0.8);
-        }
+        0% { opacity: 1; transform: scale(1); }
+        100% { opacity: 0.4; transform: scale(0.8); }
       }
 
+      /* ✅ Responsive Search Form */
       .search-box-wrapper {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 30px;
+        background: #fff;
         transition: 0.3s ease;
-        border-radius: 12px;
       }
       .search-box-wrapper:focus-within {
         transform: translateY(-3px);
-        box-shadow: 0 15px 30px rgba(255, 102, 163, 0.15);
+      }
+      
+      .search-input-group {
+        flex: 1;
+        margin: 0;
+      }
+      .search-input {
+        border-radius: 12px 0 0 12px;
+        border-right: none;
+      }
+      .search-btn {
+        margin: 0;
+        border-radius: 0 12px 12px 0;
+        padding: 0 30px;
+        white-space: nowrap; /* ห้ามปุ่มฉีกคำ */
+      }
+
+      /* 🛑 กฎสำคัญ: บังคับการแสดงผลบนมือถือให้สวยงาม 🛑 */
+      @media (max-width: 768px) {
+        .status-card {
+          padding: 30px 20px;
+        }
+        
+        /* ย้ายป้าย Live มาอยู่ตรงกลางด้านบนแทน เพื่อไม่ให้เบียดหัวข้อ */
+        .live-badge {
+          position: relative;
+          top: 0;
+          right: 0;
+          margin: 0 auto 15px auto;
+          width: max-content;
+          justify-content: center;
+        }
+
+        /* จับช่องค้นหาและปุ่มแยกบรรทัดกัน */
+        .search-box-wrapper {
+          flex-direction: column;
+          gap: 10px;
+        }
+        
+        /* ปรับขอบโค้งให้สวยงามเมื่ออยู่แยกบรรทัด */
+        .search-input {
+          border-radius: 12px !important;
+          border-right: 1.5px solid #e1e5eb !important;
+          text-align: center;
+        }
+        
+        .search-btn {
+          border-radius: 12px !important;
+          width: 100%;
+          padding: 15px 30px !important;
+        }
       }
 
       #sRes {
         animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
       }
       @keyframes slideUpFade {
-        0% {
-          opacity: 0;
-          transform: translateY(30px);
-        }
-        100% {
-          opacity: 1;
-          transform: translateY(0);
-        }
+        0% { opacity: 0; transform: translateY(30px); }
+        100% { opacity: 1; transform: translateY(0); }
       }
 
       .highlight-number {
@@ -81,13 +125,8 @@
         animation: float 3s ease-in-out infinite;
       }
       @keyframes float {
-        0%,
-        100% {
-          transform: translateY(0);
-        }
-        50% {
-          transform: translateY(-5px);
-        }
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-5px); }
       }
 
       .tracker-line {
@@ -111,36 +150,22 @@
       .tracker-progress::after {
         content: "";
         position: absolute;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        right: 0;
-        background: linear-gradient(
-          90deg,
-          rgba(255, 255, 255, 0) 0%,
-          rgba(255, 255, 255, 0.4) 50%,
-          rgba(255, 255, 255, 0) 100%
-        );
+        top: 0; left: 0; bottom: 0; right: 0;
+        background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.4) 50%, rgba(255, 255, 255, 0) 100%);
         animation: shimmer 2s infinite;
       }
       @keyframes shimmer {
-        0% {
-          transform: translateX(-100%);
-        }
-        100% {
-          transform: translateX(100%);
-        }
+        0% { transform: translateX(-100%); }
+        100% { transform: translateX(100%); }
       }
 
-      .status-box,
-      .wait-time-container {
-        transition: 0.3s;
-      }
-      .status-box:hover,
-      .wait-time-container:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.04);
-      }
+      .status-box, .wait-time-container { transition: 0.3s; }
+      .status-box:hover, .wait-time-container:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0, 0, 0, 0.04); }
+      
+      .wait-row { display: flex; align-items: center; gap: 15px; }
+      .wait-info { flex: 1; text-align: left; }
+      .wait-info span { font-size: 13px; color: #666; }
+      .wait-info h3 { margin-top: 5px; font-size: 20px; }
     </style>
   </head>
   <body class="page-body">
@@ -155,13 +180,15 @@
 
     <div class="booking-wrapper">
       <div class="status-card">
+        
+        <!-- ✅ ป้าย Live Badge -->
         <div class="live-badge">
           <div class="live-dot"></div>
           LIVE TRACKING
         </div>
 
         <div class="text-center" style="margin-bottom: 30px">
-          <h2 style="color: #1a1a1a; font-size: 28px; margin-bottom: 5px">
+          <h2 style="color: #1a1a1a; font-size: 28px; margin-bottom: 5px; word-break: keep-all;">
             ติดตามสถานะคิว
           </h2>
           <p class="subtitle" style="margin-bottom: 0">
@@ -169,32 +196,19 @@
           </p>
         </div>
 
-        <form
-          id="sForm"
-          class="search-box-wrapper"
-          style="
-            display: flex;
-            gap: 10px;
-            margin-bottom: 30px;
-            background: #fff;
-          "
-        >
-          <div class="input-group" style="margin: 0; flex: 1">
+        <!-- ✅ ระบบฟอร์มค้นหาคิวใหม่ (Responsive 100%) -->
+        <form id="sForm" class="search-box-wrapper">
+          <div class="input-group search-input-group">
             <input
               type="text"
               id="sInp"
-              class="form-control"
+              class="form-control search-input"
               placeholder="ระบุหมายเลขคิว เช่น Q-1234"
-              style="border-radius: 12px 0 0 12px; border-right: none"
               required
               autocomplete="off"
             />
           </div>
-          <button
-            type="submit"
-            class="primary-btn"
-            style="margin: 0; border-radius: 0 12px 12px 0; padding: 0 30px"
-          >
+          <button type="submit" class="primary-btn search-btn">
             <i class="fa-solid fa-magnifying-glass"></i> ค้นหาคิว
           </button>
         </form>
@@ -217,18 +231,10 @@
             </div>
           </div>
 
-          <div
-            style="
-              text-align: right;
-              font-size: 12px;
-              color: #888;
-              margin-top: 10px;
-              font-weight: 600;
-            "
-            id="rStatusText"
-          >
+          <div style="text-align: right; font-size: 12px; color: #888; margin-top: 10px; font-weight: 600;" id="rStatusText">
             กำลังคำนวณระยะห่าง...
           </div>
+          
           <div class="tracker-line">
             <div class="tracker-progress" id="rProgress"></div>
           </div>
@@ -242,10 +248,7 @@
               </div>
             </div>
             <div class="wait-row" style="margin-top: 20px">
-              <div
-                class="wait-icon"
-                style="background: #e8f0fe; color: #1a73e8"
-              >
+              <div class="wait-icon" style="background: #e8f0fe; color: #1a73e8">
                 <i class="fa-solid fa-hourglass-half"></i>
               </div>
               <div class="wait-info">
@@ -255,36 +258,18 @@
             </div>
           </div>
 
-          <div
-            class="ticket-details"
-            style="
-              margin-top: 25px;
-              border-top: 2px dashed #f0f4f8;
-              padding-top: 25px;
-              border-radius: 0;
-              background: transparent;
-              padding-bottom: 0;
-              margin-left: 0;
-              margin-right: 0;
-            "
-          >
+          <div class="ticket-details" style="margin-top: 25px; border-top: 2px dashed #f0f4f8; padding-top: 25px; border-radius: 0; background: transparent; padding-bottom: 0; margin-left: 0; margin-right: 0;">
             <div class="detail-row">
-              <span
-                ><i class="fa-solid fa-layer-group" style="color: #ccc"></i>
-                บริการที่เลือก:</span
-              ><strong id="r-service"></strong>
+              <span><i class="fa-solid fa-layer-group" style="color: #ccc"></i> บริการที่เลือก:</span>
+              <strong id="r-service"></strong>
             </div>
             <div class="detail-row">
-              <span
-                ><i class="fa-regular fa-calendar" style="color: #ccc"></i>
-                วันที่นัดหมาย:</span
-              ><strong id="r-date"></strong>
+              <span><i class="fa-regular fa-calendar" style="color: #ccc"></i> วันที่นัดหมาย:</span>
+              <strong id="r-date"></strong>
             </div>
             <div class="detail-row" style="margin-bottom: 0; border: none">
-              <span
-                ><i class="fa-regular fa-clock" style="color: #ccc"></i>
-                เวลาที่จอง:</span
-              ><strong id="r-time"></strong>
+              <span><i class="fa-regular fa-clock" style="color: #ccc"></i> เวลาที่จอง:</span>
+              <strong id="r-time"></strong>
             </div>
           </div>
         </div>
